@@ -5,18 +5,18 @@ const { performance } = require("perf_hooks");
 const fs = require("fs").promises;
 const readline = require("readline");
 
-process.on("unhandledRejection", error => {
+process.on("unhandledRejection", (error) => {
   console.error(error);
   process.exit(1);
 });
 
-const formatFilename = day => {
+const formatFilename = (day) => {
   // You can customize this function to your liking
 
   return day.toString().padStart(2, "0");
 };
 
-const formatRuntime = ms => {
+const formatRuntime = (ms) => {
   // You can customize this function to your liking
 
   // microseconds
@@ -63,7 +63,7 @@ const runPart = async (part, mod, data) => {
   }
 };
 
-const getData = async day => {
+const getData = async (day) => {
   const fname = formatFilename(day) + ".txt";
 
   let data;
@@ -79,7 +79,7 @@ const getData = async day => {
   return data;
 };
 
-const run = async (day, year = 2020) => {
+const run = async (day, year = 2022) => {
   console.log(`AOC ${year} Day ${day}`);
 
   const mod = require("./" + formatFilename(day));
@@ -92,20 +92,20 @@ const run = async (day, year = 2020) => {
   }
 };
 
-const ask = question =>
-  new Promise(resolve => {
+const ask = (question) =>
+  new Promise((resolve) => {
     const rl = readline.createInterface({
       input: process.stdin,
-      output: process.stdout
+      output: process.stdout,
     });
 
-    rl.question(question, answer => {
+    rl.question(question, (answer) => {
       rl.close();
       resolve(answer);
     });
   });
 
-const getDay = async maxDay => {
+const getDay = async (maxDay) => {
   while (true) {
     let question = "Enter day" + (maxDay ? ` (max ${maxDay})` : "") + ": ";
     const inp = await ask(question);
@@ -125,5 +125,5 @@ module.exports = {
   formatFilename,
   formatRuntime,
   run,
-  getDay
+  getDay,
 };
