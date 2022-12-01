@@ -1,25 +1,42 @@
 var helpers = require("./helpers");
 
+const processElfSnackData = data => {
+    // split by blank line to separate out the elves
+    const elfSnackCalories = helpers.splitByBlankLine(data)
+    // convert the array of strings to array of int arrays
+    const arrayOfCalorieArrays = elfSnackCalories.map(elfSnacks => 
+      elfSnacks.split("\n").map(elfSnack => parseInt(elfSnack))
+    )
+  return arrayOfCalorieArrays
+}
+
+const getElfSnackTotal = calorieArray => {
+  return calorieArray.reduce((partialSum, currentCalorieCount) => partialSum + currentCalorieCount, 0)
+}
+
 const part1 = (data) => {
-  const inputArray = helpers.splitByNewLine(data);
-  var x = 0;
-  var y = 0;
-  inputArray.forEach((input) => {
-    var [command, amount] = helpers.splitBySpace(input);
-    amount = parseInt(amount);
-    if (command === "forward") {
-      x += amount;
-    } else if (command === "down") {
-      y += amount;
-    } else {
-      y -= amount;
+  const elfCalorieData = processElfSnackData(data)
+  let maxCalorieCount = 0
+  elfCalorieData.forEach(calorieArray => {
+    const elfSnackTotalCalorieCount = getElfSnackTotal(calorieArray)
+    if (elfSnackTotalCalorieCount > maxCalorieCount) {
+      maxCalorieCount = elfSnackTotalCalorieCount
     }
-  });
-  return x * y;
+  })
+  return maxCalorieCount
 };
 
 const part2 = (data) => {
-  return "TODO ";
+  const elfCalorieData = processElfSnackData(data)
+  // empty array to store elf snack totals
+  let calorieCountArray = []
+  elfCalorieData.forEach(calorieArray => {
+    const elfSnackTotalCalorieCount = getElfSnackTotal(calorieArray)
+    calorieCountArray.push(elfSnackTotalCalorieCount)
+  })
+  calorieCountArray.sort((a,b) => b-a)
+  return calorieCountArray[0] + calorieCountArray[1] + calorieCountArray[2]
+
 };
 
 module.exports = {

@@ -2,4 +2,5 @@ const splitByNewLine = (data) => data.split(/\r?\n/);
 
 const splitBySpace = (data) => data.split(" ");
 
-module.exports = { splitByNewLine, splitBySpace };
+const splitByBlankLine = data => data.split(/\n\n/)
+module.exports = { splitByNewLine, splitBySpace, splitByBlankLine };
