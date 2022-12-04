@@ -28,7 +28,6 @@ const part2 = (data) => {
       ? matching.charCodeAt(0) - 38
       : matching.charCodeAt(0) - 96;
   }
-
   return total;
 };
 
