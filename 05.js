@@ -35,7 +35,7 @@ const part2 = (data) => {
   return topOfStacks;
 };
 
-// i hate this code, but just kept moving forward trying to process the stack data into array of stack arrays
+// i am not happy with this code, but just kept moving forward trying to process the stack data into array of stack arrays
 const getArrayOfStackArrays = (stackData) => {
   const stackDataArray = helpers.splitByNewLine(stackData);
   let line = 0;
