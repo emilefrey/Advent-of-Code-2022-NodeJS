@@ -1,15 +1,21 @@
 var helpers = require("./helpers");
 
+const getSubstringWithUniqueCharactersPosition = (input, count) => {
+  for (let i = 0; i < input.length; i++) {
+    const set = new Set(input.substr(i, count));
+    if (set.size === count) {
+      return i + count;
+    }
+  }
+  return `No substring with unique characters of length ${count}!`;
+};
+
 const part1 = (data) => {
-  const stuff = helpers.splitByNewLine(data);
-  stuff.forEach((item, index) => {});
-  return 0;
+  return getSubstringWithUniqueCharactersPosition(data, 4);
 };
 
 const part2 = (data) => {
-  const stuff = helpers.splitByNewLine(data);
-  stuff.forEach((item, index) => {});
-  return 0;
+  return getSubstringWithUniqueCharactersPosition(data, 14);
 };
 
 module.exports = {
