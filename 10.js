@@ -3,7 +3,6 @@ var helpers = require("./helpers");
 const part1 = (data) => {
   const stuff = helpers.splitByNewLine(data);
 
-  const ranges = [];
   let cycle = 1;
   const cyclesToCheck = [20, 60, 100, 140, 180, 220];
   let total = 1;
@@ -43,7 +42,7 @@ const generatePixel = (spritePosition, cycle) => {
   if (spriteLocations.includes(cycle - 1)) {
     return "#";
   } else {
-    return ".";
+    return " ";
   }
 };
 
@@ -58,27 +57,25 @@ const part2 = (data) => {
     let [directive, amount] = command.split(" ");
     amount = parseInt(amount);
     let currentRowKey = Math.max(
-      ...Object.keys(cyclesToCheck).filter((toCheck) => toCheck <= cycle)
+      ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
     );
-
     if (directive === "noop") {
-      cycle++;
       currentRowKey = Math.max(
-        ...Object.keys(cyclesToCheck).filter((toCheck) => toCheck < cycle)
+        ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
       );
       cyclesToCheck[currentRowKey].push(
         generatePixel(total + currentRowKey, cycle)
       );
+      cycle++;
     } else {
       for (let addXCycle = 1; addXCycle <= 2; addXCycle++) {
+        currentRowKey = Math.max(
+          ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
+        );
         cyclesToCheck[currentRowKey].push(
           generatePixel(total + currentRowKey, cycle)
         );
-        currentRowKey = Math.max(
-          ...Object.keys(cyclesToCheck).filter((toCheck) => toCheck <= cycle)
-        );
         cycle += 1;
-
         if (addXCycle === 2) {
           total += amount;
         }
@@ -89,8 +86,7 @@ const part2 = (data) => {
   Object.values(cyclesToCheck).forEach((cycle) => {
     console.log(cycle.join(""));
   });
-
-  // return cyclesToCheck;
+  return "SEE CRT ABOVE!";
 };
 
 module.exports = {
