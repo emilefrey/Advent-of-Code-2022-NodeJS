@@ -11,20 +11,15 @@ const part1 = (data) => {
   stuff.forEach((command) => {
     let [directive, amount] = command.split(" ");
     amount = parseInt(amount);
-    if (directive === "noop") {
-      cycle++;
+    cycle++;
+    if (cyclesToCheck.includes(cycle)) {
+      signal += total * cycle;
+    }
+    if (directive === "addx") {
+      cycle += 1;
+      total += amount;
       if (cyclesToCheck.includes(cycle)) {
         signal += total * cycle;
-      }
-    } else {
-      for (let addXCycle = 1; addXCycle <= 2; addXCycle++) {
-        cycle += 1;
-        if (addXCycle === 2) {
-          total += amount;
-        }
-        if (cyclesToCheck.includes(cycle)) {
-          signal += total * cycle;
-        }
       }
     }
   });
@@ -49,37 +44,29 @@ const generatePixel = (spritePosition, cycle) => {
 const part2 = (data) => {
   const stuff = helpers.splitByNewLine(data);
 
-  let cycle = 1;
+  let cycle = 0;
   const cyclesToCheck = { 0: [], 40: [], 80: [], 120: [], 160: [], 200: [] };
   let total = 1;
 
   stuff.forEach((command) => {
     let [directive, amount] = command.split(" ");
     amount = parseInt(amount);
+    cycle += 1;
     let currentRowKey = Math.max(
       ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
     );
-    if (directive === "noop") {
+    cyclesToCheck[currentRowKey].push(
+      generatePixel(total + currentRowKey, cycle)
+    );
+    if (directive === "addx") {
+      cycle++;
       currentRowKey = Math.max(
         ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
       );
       cyclesToCheck[currentRowKey].push(
         generatePixel(total + currentRowKey, cycle)
       );
-      cycle++;
-    } else {
-      for (let addXCycle = 1; addXCycle <= 2; addXCycle++) {
-        currentRowKey = Math.max(
-          ...Object.keys(cyclesToCheck).filter((toCheck) => cycle > toCheck)
-        );
-        cyclesToCheck[currentRowKey].push(
-          generatePixel(total + currentRowKey, cycle)
-        );
-        cycle += 1;
-        if (addXCycle === 2) {
-          total += amount;
-        }
-      }
+      total += amount;
     }
   });
 
