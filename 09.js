@@ -22,7 +22,8 @@ const moveTail = (tail, head) => {
       tail.xPos -= 1;
     }
     tailXMoved = true;
-  } else if (Math.abs(head.yPos - tail.yPos) > 1) {
+  }
+  if (Math.abs(head.yPos - tail.yPos) > 1) {
     if (head.yPos - tail.yPos > 1) {
       tail.yPos += 1;
     } else {
@@ -30,11 +31,15 @@ const moveTail = (tail, head) => {
     }
     tailYMoved = true;
   }
-
-  if (tailYMoved) {
-    tail.xPos = head.xPos;
-  } else if (tailXMoved) {
-    tail.yPos = head.yPos;
+  // XOR http://www.howtocreate.co.uk/xor.html
+  // basically, if the rope is pulling diagonally, don't do the tail catchup move below
+  // but do the tail catchup move if only Y moved or only X moved (exclusive)
+  if (!tailXMoved != !tailYMoved) {
+    if (tailYMoved) {
+      tail.xPos = head.xPos;
+    } else if (tailXMoved) {
+      tail.yPos = head.yPos;
+    }
   }
   return { tailX: tail.xPos, tailY: tail.yPos };
 };
@@ -43,9 +48,9 @@ const part1 = (data) => {
   let head = { xPos: 0, yPos: 0 };
   let tail = { xPos: 0, yPos: 0 };
   let tailPositionsVisited = new Set([`${tail.xPos}/${tail.yPos}`]);
-  const stuff = helpers.splitByNewLine(data);
-  stuff.forEach((command) => {
-    let [direction, amount] = command.split(" ");
+  const movements = helpers.splitByNewLine(data);
+  movements.forEach((movement) => {
+    let [direction, amount] = movement.split(" ");
     amount = parseInt(amount);
     for (let i = 0; i < amount; i++) {
       moveHead(head, direction);
@@ -57,22 +62,16 @@ const part1 = (data) => {
 };
 
 const part2 = (data) => {
-  const knots = [
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-    { xPos: 0, yPos: 0 },
-  ];
+  const knots = [];
+
+  //create the knots
+  for (let i = 0; i < 10; i++) {
+    knots.push({ xPos: 0, yPos: 0 });
+  }
 
   const tailPositionsVisited = new Set([`${knots[9].xPos}/${knots[9].yPos}`]);
-  const stuff = helpers.splitByNewLine(data);
-  stuff.forEach((command) => {
+  const movements = helpers.splitByNewLine(data);
+  movements.forEach((command) => {
     let [direction, amount] = command.split(" ");
     amount = parseInt(amount);
     for (let i = 0; i < amount; i++) {
@@ -83,6 +82,7 @@ const part2 = (data) => {
       tailPositionsVisited.add(`${knots[9].xPos}/${knots[9].yPos}`);
     }
   });
+
   return tailPositionsVisited.size;
 };
 
