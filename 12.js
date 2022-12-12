@@ -55,13 +55,13 @@ const bfs = (start, end) => {
   start.visited = true;
   queue.push(start);
   while (queue.length > 0) {
-    const current = queue.pop();
+    const current = queue.shift();
     for (let i = 0; i < current.neighbors.length; i++) {
       const neighbor = current.neighbors[i];
       if (!neighbor.visited) {
         neighbor.visited = true;
-        queue.push(neighbor);
         neighbor.previous = current;
+        queue.push(neighbor);
         if (neighbor === end) {
           queue = [];
           break;
@@ -69,17 +69,16 @@ const bfs = (start, end) => {
       }
     }
   }
-  return traceRoute(end);
+  return getRouteLength(end);
 };
 
-const traceRoute = (end) => {
+const getRouteLength = (end) => {
   let node = end;
   const route = [];
   while (node) {
     route.push(node);
     node = node.previous;
   }
-  console.log(route.reverse().map((a) => a.nodeString));
   return route.length - 1;
 };
 
@@ -98,7 +97,26 @@ const part1 = (data) => {
 };
 
 const part2 = (data) => {
-  return "TODO ";
+  const inputRows = helpers
+    .splitByNewLine(data)
+    .map((inputLine) => inputLine.split("").map((char) => char.charCodeAt(0)));
+  const nodes = {};
+  const { start, end } = processInput(inputRows, nodes);
+
+  Object.entries(nodes).forEach(([nodeString, nodeInfo]) => {
+    getNeighbors(nodeString, nodeInfo, nodes);
+  });
+
+  const a = Object.entries(nodes)
+    .filter(([nodeString, nodeInfo]) => nodeInfo.value === 97)
+    .reduce((obj, [key, nodeInfo]) => {
+      obj[key] = nodes[key];
+      return obj;
+    }, {});
+
+  // return Object.values(a).forEach((aPosition) =>
+  //   console.log(bfs(aPosition, end))
+  // );
 };
 
 module.exports = {
