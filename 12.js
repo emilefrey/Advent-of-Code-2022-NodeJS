@@ -7,12 +7,7 @@ const processInput = (inputRows, nodes) => {
       const nodeString = `${inputRowIndex}/${inputColumnIndex}`;
       nodes[nodeString] = {
         value: parseInt(inputRowItem),
-        nodeString: nodeString,
-        neighbors: [],
-        visited: false,
-        previous: null,
       };
-
       if (inputRowItem === 83) {
         const start = nodes[`${inputRowIndex}/${inputColumnIndex}`];
         start.value = 97;
@@ -40,13 +35,12 @@ const getNeighbors = (nodeString, nodeInfo, nodes, part2 = false) => {
   if ((part2 ? -1 : 1) * (downNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(downNode);
   }
-  if ((part2 ? -1 : 1) * (rightNode?.value - nodeInfo.value) <= 1) {
-    neighbors.push(rightNode);
-  }
   if ((part2 ? -1 : 1) * (leftNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(leftNode);
   }
-
+  if ((part2 ? -1 : 1) * (rightNode?.value - nodeInfo.value) <= 1) {
+    neighbors.push(rightNode);
+  }
   nodeInfo.neighbors = neighbors;
 };
 
@@ -85,6 +79,7 @@ const bfsPart2 = (start) => {
         neighbor.visited = true;
         neighbor.previous = current;
         queue.push(neighbor);
+        // part 2 ends on first a
         if (neighbor.value === 97) {
           end = neighbor;
           queue = [];
