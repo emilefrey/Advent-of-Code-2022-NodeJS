@@ -27,46 +27,23 @@ const processInput = (inputRows, nodes) => {
   return startEnd;
 };
 
-const getNeighbors = (nodeString, nodeInfo, nodes) => {
+const getNeighbors = (nodeString, nodeInfo, nodes, part2 = false) => {
   const [row, column] = nodeString.split("/").map(Number);
   const neighbors = [];
   const upNode = nodes[`${row - 1}/${column}`];
   const downNode = nodes[`${row + 1}/${column}`];
   const leftNode = nodes[`${row}/${column - 1}`];
   const rightNode = nodes[`${row}/${column + 1}`];
-  if (upNode?.value - nodeInfo.value <= 1) {
+  if ((part2 ? -1 : 1) * (upNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(upNode);
   }
-  if (downNode?.value - nodeInfo.value <= 1) {
+  if ((part2 ? -1 : 1) * (downNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(downNode);
   }
-  if (rightNode?.value - nodeInfo.value <= 1) {
+  if ((part2 ? -1 : 1) * (rightNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(rightNode);
   }
-  if (leftNode?.value - nodeInfo.value <= 1) {
-    neighbors.push(leftNode);
-  }
-
-  nodeInfo.neighbors = neighbors;
-};
-
-const getNeighborsPart2 = (nodeString, nodeInfo, nodes) => {
-  const [row, column] = nodeString.split("/").map(Number);
-  const neighbors = [];
-  const upNode = nodes[`${row - 1}/${column}`];
-  const downNode = nodes[`${row + 1}/${column}`];
-  const leftNode = nodes[`${row}/${column - 1}`];
-  const rightNode = nodes[`${row}/${column + 1}`];
-  if (nodeInfo.value - upNode?.value <= 1) {
-    neighbors.push(upNode);
-  }
-  if (nodeInfo.value - downNode?.value <= 1) {
-    neighbors.push(downNode);
-  }
-  if (nodeInfo.value - rightNode?.value <= 1) {
-    neighbors.push(rightNode);
-  }
-  if (nodeInfo.value - leftNode?.value <= 1) {
+  if ((part2 ? -1 : 1) * (leftNode?.value - nodeInfo.value) <= 1) {
     neighbors.push(leftNode);
   }
 
@@ -151,7 +128,7 @@ const part2 = (data) => {
   const { start, end } = processInput(inputRows, nodes);
 
   Object.entries(nodes).forEach(([nodeString, nodeInfo]) => {
-    getNeighborsPart2(nodeString, nodeInfo, nodes);
+    getNeighbors(nodeString, nodeInfo, nodes, true);
   });
 
   return bfsPart2(end, start);
