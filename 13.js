@@ -22,8 +22,8 @@ const compareItems = (one, two) => {
     // if the above got a result, return it, otherwise keep going
     if (result !== null) return result;
   }
-  // if you got thru everything and one list is shorter than other, then return true
-  return one.length < two.length ? true : null;
+  // if you got thru everything, just return true/false based on lengths
+  return one.length < two.length;
 };
 
 const part1 = (data) => {
@@ -44,7 +44,7 @@ const part2 = (data) => {
   const marker1 = [[2]];
   const marker2 = [[6]];
   let all = [marker1, marker2, ...lines];
-  // I was gonna try to do this manually. Sort is pretty amazing.
+  // I was gonna try to do this manually. Sort is pretty amazing!
   all.sort((a, b) => (compareItems(a, b) ? -1 : 1));
   const marker1Index = all.findIndex((item) => item === marker1) + 1;
   const marker2Index = all.findIndex((item) => item === marker2) + 1;
