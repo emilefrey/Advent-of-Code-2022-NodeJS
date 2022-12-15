@@ -1,5 +1,7 @@
 var helpers = require("./helpers");
 
+// NEEDS SOME SERIOUS LOVE (AKA REFACTORING...AKA REMOVE TONS OF REDUNDANT CODE)
+
 const generateWalls = (wallData, wallSet) => {
   let lowestPoint = 0;
   wallData.forEach((wall) => {
