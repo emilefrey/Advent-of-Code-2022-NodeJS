@@ -17,7 +17,7 @@ const part1 = (data) => {
         .replaceAll("y=", "")
     )
     .map((item) => item.split(": "));
-  const rowOfInterest = 2000000;
+  const rowOfInterest = 10;
   const beaconSensorSet = new Set();
   const pointsCovered = new Set();
   sensorBeaconData.forEach((pair, index) => {
@@ -31,32 +31,23 @@ const part1 = (data) => {
       Math.abs(beaconY - sensorY) + Math.abs(beaconX - sensorX);
     for (let i = 0; i <= manhattanDistance; i++) {
       for (let j = 0; j <= manhattanDistance - i; j++) {
-        const q1x = sensorX + j;
-        const q1y = sensorY + i;
-        const q2x = sensorX - j;
-        const q2y = sensorY + i;
-        const q3x = sensorX - j;
-        const q3y = sensorY - i;
-        const q4x = sensorX + j;
-        const q4y = sensorY - i;
-        if (q1y === rowOfInterest) {
-          pointsCovered.add(`${q1x},${q1y}`);
-        }
-        if (q2y === rowOfInterest) {
-          pointsCovered.add(`${q2x},${q2y}`);
-        }
-        if (q3y === rowOfInterest) {
-          pointsCovered.add(`${q3x},${q3y}`);
-        }
-        if (q4y === rowOfInterest) {
-          pointsCovered.add(`${q4x},${q4y}`);
+        const yPlus = sensorY + i;
+        const yMinus = sensorY - i;
+        const xPlus = sensorX + j;
+        const xMinus = sensorX - j;
+        if (yPlus === rowOfInterest) {
+          pointsCovered.add(`${xPlus},${yPlus}`);
+          pointsCovered.add(`${xMinus},${yPlus}`);
+        } else if (yMinus === rowOfInterest) {
+          pointsCovered.add(`${xPlus},${yMinus}`);
+          pointsCovered.add(`${xMinus},${yMinus}`);
         }
       }
     }
   });
   removeAll(pointsCovered, beaconSensorSet);
   const row10 = Array.from(pointsCovered).filter((point) =>
-    point.endsWith(",2000000")
+    point.endsWith(",10")
   );
   return row10.length;
 };
