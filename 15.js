@@ -21,7 +21,6 @@ const part1 = (data) => {
   const beaconSensorSet = new Set();
   const pointsCovered = new Set();
   sensorBeaconData.forEach((pair, index) => {
-    console.log(index);
     const [sensorX, sensorY] = pair[0].split(",").map(Number);
     const [beaconX, beaconY] = pair[1].split(",").map(Number);
     beaconSensorSet.add(`${sensorX},${sensorY}`);
@@ -49,10 +48,10 @@ const part1 = (data) => {
     }
   });
   removeAll(pointsCovered, beaconSensorSet);
-  const row10 = Array.from(pointsCovered).filter((point) =>
+  const row = Array.from(pointsCovered).filter((point) =>
     point.endsWith(",2000000")
   );
-  return row10.length;
+  return row.length;
 };
 
 const part2 = (data) => {
