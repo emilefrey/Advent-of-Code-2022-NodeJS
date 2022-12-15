@@ -108,6 +108,3 @@ module.exports = {
   part1,
   part2,
 };
-
-// too low
-//28262
